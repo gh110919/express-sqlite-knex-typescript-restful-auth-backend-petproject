@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "@types/bcrypt": "^5.0.1",
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.4",
+    "@types/knex": "^0.16.1",
+    "@types/node": "^20.8.2",
+    "@types/nodemon": "^1.19.4",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "nodemon": "^3.0.1",
+    "sqlite3": "^5.1.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "main": "./index.ts",
+  "name": "backend",
+  "private": true,
+  "scripts": {
+    "start": "nodemon",
+    "migrate": "ts-node ./src/database/migrate.ts",
+    "drop": "ts-node ./src/database/drop.ts"
+  },
+  "type": "commonjs",
+  "version": "1.0.1"
+}
