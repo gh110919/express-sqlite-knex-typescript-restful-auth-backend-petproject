@@ -3,14 +3,9 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "module": "CommonJS",
-    // "noEmit": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "outDir": "dist",
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    // "useDefineForClassFields": true,
-    // "moduleResolution": "Node"
   },
   "exclude": ["node_modules"],
   "include": ["src"]

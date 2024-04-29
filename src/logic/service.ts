@@ -35,8 +35,8 @@ const cut =
   };
 
 export const service = <T>(model: TModel<T>) => ({
-  create: set(model),
-  read: get(model),
-  update: put(model),
-  delete: cut(model),
+  create: set<T>(model),
+  read: get<T>(model),
+  update: put<T>(model),
+  delete: cut<T>(model),
 });

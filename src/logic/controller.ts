@@ -48,8 +48,8 @@ const cut =
   };
 
 export const controller = <T>(service: TService<T>) => ({
-  create: set(service),
-  read: get(service),
-  update: put(service),
-  delete: cut(service),
+  create: set<T>(service),
+  read: get<T>(service),
+  update: put<T>(service),
+  delete: cut<T>(service),
 });

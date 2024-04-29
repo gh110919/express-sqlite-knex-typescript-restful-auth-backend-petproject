@@ -1,8 +1,8 @@
 import cors from "cors";
 import express, { json } from "express";
 import { authMiddleware } from "./auth/authMiddleware";
-import { endpoints } from "./logic/endpoints";
 import { crudMiddleware } from "./logic/crud-middleware";
+import { endpoints } from "./logic/endpoints";
 
 ((server) => {
   try {
