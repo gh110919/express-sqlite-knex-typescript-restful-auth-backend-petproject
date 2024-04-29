@@ -1,49 +1,42 @@
 export type TModel<T> = {
   create: (data: T) => Promise<T>;
-  find: () => Promise<T[]>;
-  findById: (id: string) => Promise<T | null>;
-  findByIdAndUpdate: (id: string, data: T) => Promise<T | null>;
-  findByIdAndDelete: (id: string) => Promise<T | null>;
+  read: (id?: number) => Promise<T | T[] | null>;
+  update: (id: number, data?: T) => Promise<T | null>;
+  delete: (id: number) => Promise<T | null>;
 };
 
-const create =
+const set =
   <T>(model: TModel<T>) =>
   async (data: T) =>
     model.create(data);
 
-const readAll =
+const get =
   <T>(model: TModel<T>) =>
-  async () =>
-    model.find();
+  async (id?: number) => {
+    if (!id) {
+      return model.read();
+    }
+    return model.read(id);
+  };
 
-const readOne =
+const put =
   <T>(model: TModel<T>) =>
-  async (id: string) => {
+  async (id: number, data: any) => {
+    return model.update(id, data);
+  };
+
+const cut =
+  <T>(model: TModel<T>) =>
+  async (id: number) => {
     if (!id) {
       throw new Error("не указан id");
     }
-    return model.findById(id);
-  };
-
-const update =
-  <T>(model: TModel<T>) =>
-  async (id: string, data: any) => {
-    return model.findByIdAndUpdate(id, data);
-  };
-
-const deleteOne =
-  <T>(model: TModel<T>) =>
-  async (id: string) => {
-    if (!id) {
-      throw new Error("не указан id");
-    }
-    return model.findByIdAndDelete(id);
+    return model.delete(id);
   };
 
 export const service = <T>(model: TModel<T>) => ({
-  create: create(model),
-  readAll: readAll(model),
-  readOne: readOne(model),
-  update: update(model),
-  delete: deleteOne(model),
+  create: set(model),
+  read: get(model),
+  update: put(model),
+  delete: cut(model),
 });

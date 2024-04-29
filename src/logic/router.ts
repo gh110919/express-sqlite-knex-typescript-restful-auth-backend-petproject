@@ -2,8 +2,7 @@ import { Request, Response, Router } from "express";
 
 export type TController = {
   create: (request: Request, response: Response) => Promise<void>;
-  readAll: (request: Request, response: Response) => Promise<void>;
-  readOne: (request: Request, response: Response) => Promise<void>;
+  read: (request: Request, response: Response) => Promise<void>;
   update: (request: Request, response: Response) => Promise<void>;
   delete: (request: Request, response: Response) => Promise<void>;
 };
@@ -11,8 +10,7 @@ export type TController = {
 const routes = (router: Router, endpoint: string, controller: TController) => {
   return router
     .post(endpoint, controller.create)
-    .get(endpoint, controller.readAll)
-    .get(`${endpoint}/:id`, controller.readOne)
+    .get(`${endpoint}/:id?`, controller.read)
     .patch(endpoint, controller.update)
     .delete(`${endpoint}/:id`, controller.delete);
 };

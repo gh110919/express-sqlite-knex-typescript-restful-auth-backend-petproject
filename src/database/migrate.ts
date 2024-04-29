@@ -1,6 +1,5 @@
 import { db } from "./db-middleware";
 
-// Создаем таблицу "users"
 (async () => {
   try {
     await db.schema.createTable("users", (table: any) => {

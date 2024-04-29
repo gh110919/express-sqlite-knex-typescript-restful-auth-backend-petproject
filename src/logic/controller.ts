@@ -2,59 +2,54 @@ import { Request, Response } from "express";
 
 export type TService<T> = {
   create: (data: T) => Promise<T>;
-  readAll: () => Promise<T[]>;
-  readOne: (id: string) => Promise<T | null>;
-  update: (id: string, data: T) => Promise<T | null>;
-  delete: (id: string) => Promise<T | null>;
+  read: (id?: number) => Promise<T | T[] | null>;
+  update: (id: number, data: T) => Promise<T | null>;
+  delete: (id: number) => Promise<T | null>;
 };
 
-const control = <T>(response: Response, data: Promise<T>) => {
-  data
-    .then((result) =>
-      response.status(200).json({ success: true, message: result })
-    )
-    .catch((error) =>
-      response.status(500).json({ success: false, message: error })
-    );
+const control = async <T>(response: Response, data: Promise<T>) => {
+  try {
+    response.status(200).json({ success: true, message: await data });
+  } catch (error) {
+    response.status(500).json({ success: false, message: error });
+  }
 };
 
-const create =
+const set =
   <T>(service: TService<T>) =>
   async (request: Request, response: Response) => {
     control<T>(response, service.create(request.body));
   };
 
-const readAll =
-  <T>(service: TService<T>) =>
-  async (_request: Request, response: Response) => {
-    control<T[]>(response, service.readAll());
-  };
-
-const readOne =
+const get =
   <T>(service: TService<T>) =>
   async (request: Request, response: Response) => {
-    control<T | null>(response, service.readOne(request.params.id));
+    request.params.id
+      ? control<T | T[] | null>(
+          response,
+          service.read(Number(request.params.id))
+        )
+      : control<T | T[] | null>(response, service.read());
   };
 
-const update =
+const put =
   <T>(service: TService<T>) =>
   async (request: Request, response: Response) => {
     control<T | null>(
       response,
-      service.update(request.body.id, request.body.data)
+      service.update(Number(request.body.id), request.body.data)
     );
   };
 
-const deleteOne =
+const cut =
   <T>(service: TService<T>) =>
   async (request: Request, response: Response) => {
-    control<T | null>(response, service.delete(request.params.id));
+    control<T | null>(response, service.delete(Number(request.params.id)));
   };
 
 export const controller = <T>(service: TService<T>) => ({
-  create: create(service),
-  readAll: readAll(service),
-  readOne: readOne(service),
-  update: update(service),
-  delete: deleteOne(service),
+  create: set(service),
+  read: get(service),
+  update: put(service),
+  delete: cut(service),
 });
